@@ -518,6 +518,7 @@ CREATE TABLE `quests`
     PRIMARY KEY (`uid`),
     KEY `ix_quests_characterid` (`character_id`),
     CONSTRAINT `fk_quests_characters_characterid` FOREIGN KEY (`character_id`) REFERENCES `characters` (`character_id`) ON DELETE RESTRICT
+    CONSTRAINT `quest_character_limit` UNIQUE (`character_id`,`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
