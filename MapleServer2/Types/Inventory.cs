@@ -6,6 +6,8 @@ using MapleServer2.Database;
 using MapleServer2.Packets;
 using MapleServer2.Servers.Game;
 
+using NLog;
+
 // TODO: make this class thread safe?
 namespace MapleServer2.Types;
 
@@ -94,29 +96,36 @@ public class Inventory
         ExtraSize = extraSize;
         int badgeIndex = 0;
 
-        foreach (Item item in items)
+        try
         {
-            item.SetMetadataValues();
-            if (item.IsEquipped)
+            foreach (Item item in items)
             {
-                switch (item.InventoryTab)
+                item.SetMetadataValues();
+                if (item.IsEquipped)
                 {
-                    case InventoryTab.Outfit:
-                        Cosmetics.Add(item.ItemSlot, item);
-                        continue;
-                    case InventoryTab.Badge:
-                        Badges[badgeIndex++] = item;
-                        continue;
-                    case InventoryTab.Lapenshard:
-                        LapenshardStorage[item.Slot] = item;
-                        continue;
-                    default:
-                        Equips.Add(item.ItemSlot, item);
-                        continue;
+                    switch (item.InventoryTab)
+                    {
+                        case InventoryTab.Outfit:
+                            Cosmetics.Add(item.ItemSlot, item);
+                            continue;
+                        case InventoryTab.Badge:
+                            Badges[badgeIndex++] = item;
+                            continue;
+                        case InventoryTab.Lapenshard:
+                            LapenshardStorage[item.Slot] = item;
+                            continue;
+                        default:
+                            Equips.Add(item.ItemSlot, item);
+                            continue;
+                    }
                 }
-            }
 
-            Add(item);
+                Add(item);
+            }
+        }
+        catch (Exception e)
+        {
+            LogManager.GetCurrentClassLogger().Error(e);
         }
     }
 
