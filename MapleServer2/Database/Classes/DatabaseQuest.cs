@@ -5,6 +5,8 @@ using SqlKata.Execution;
 
 namespace MapleServer2.Database.Classes;
 
+using NLog;
+
 public class DatabaseQuest : DatabaseTable
 {
     public DatabaseQuest() : base("quests") { }
@@ -29,8 +31,15 @@ public class DatabaseQuest : DatabaseTable
         Dictionary<int, QuestStatus> questStatusList = new();
         foreach (dynamic data in results)
         {
-            QuestStatus questStatus = (QuestStatus) ReadQuest(data);
-            questStatusList.Add(questStatus.Id, questStatus);
+            try
+            {
+                QuestStatus questStatus = (QuestStatus) ReadQuest(data);
+                questStatusList.Add(questStatus.Id, questStatus);
+            }
+            catch (Exception e)
+            {
+                LogManager.GetCurrentClassLogger().Error(e);
+            }
         }
 
         return questStatusList;

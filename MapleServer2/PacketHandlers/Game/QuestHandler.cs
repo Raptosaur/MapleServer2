@@ -27,26 +27,34 @@ public class QuestHandler : GamePacketHandler
     {
         QuestMode mode = (QuestMode) packet.ReadByte();
 
-        switch (mode)
+        try
         {
-            case QuestMode.AcceptQuest:
-                HandleAcceptQuest(session, packet);
-                break;
-            case QuestMode.CompleteQuest:
-                HandleCompleteQuest(session, packet);
-                break;
-            case QuestMode.ExplorationQuests:
-                HandleAddExplorationQuests(session, packet);
-                break;
-            case QuestMode.CompleteNavigator:
-                HandleCompleteNavigator(session, packet);
-                break;
-            case QuestMode.ToggleTracking:
-                HandleToggleTracking(session, packet);
-                break;
-            default:
-                IPacketHandler<GameSession>.LogUnknownMode(mode);
-                break;
+
+            switch (mode)
+            {
+                case QuestMode.AcceptQuest:
+                    HandleAcceptQuest(session, packet);
+                    break;
+                case QuestMode.CompleteQuest:
+                    HandleCompleteQuest(session, packet);
+                    break;
+                case QuestMode.ExplorationQuests:
+                    HandleAddExplorationQuests(session, packet);
+                    break;
+                case QuestMode.CompleteNavigator:
+                    HandleCompleteNavigator(session, packet);
+                    break;
+                case QuestMode.ToggleTracking:
+                    HandleToggleTracking(session, packet);
+                    break;
+                default:
+                    IPacketHandler<GameSession>.LogUnknownMode(mode);
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e);
         }
     }
 
