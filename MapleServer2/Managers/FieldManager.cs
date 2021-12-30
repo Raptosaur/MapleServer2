@@ -45,7 +45,7 @@ public partial class FieldManager
         InstanceId = player.InstanceId;
         BoundingBox = MapEntityStorage.GetBoundingBox(MapId);
 
-        // TOOD: generate navmeshes for all maps
+        // TODO: generate navmeshes for all maps
 
         // Load default npcs for map from config
         foreach (MapNpc npc in MapEntityStorage.GetNpcs(MapId))
