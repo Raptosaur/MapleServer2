@@ -114,7 +114,7 @@ public class Inventory
                         case InventoryTab.Lapenshard:
                             LapenshardStorage[item.Slot] = item;
                             continue;
-                        default:
+                        case InventoryTab.Gear:
                             Equips.Add(item.ItemSlot, item);
                             continue;
                     }
@@ -142,6 +142,9 @@ public class Inventory
                 return;
             case ItemType.Furnishing:
                 AddToWarehouse(session, item);
+                return;
+            case ItemType.Medal:
+                session.Player.Account.AddMedal(session, item);
                 return;
         }
 
